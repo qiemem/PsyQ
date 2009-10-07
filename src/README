@@ -1,0 +1,1 @@
+If any ui file is modified, "python ui_conv.py" should be run to regenerate the corresponding python code.
