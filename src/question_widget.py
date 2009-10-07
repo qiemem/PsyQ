@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'question_widget.ui'
 #
-# Created: Tue Oct  6 21:01:24 2009
+# Created: Tue Oct  6 23:19:32 2009
 #      by: PyQt4 UI code generator 4.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,6 +19,8 @@ class Ui_QuestionForm(object):
         self.questionLabel.setObjectName("questionLabel")
         self.gridLayout.addWidget(self.questionLabel, 0, 0, 1, 1)
         self.ansLineEdit = QtGui.QLineEdit(QuestionForm)
+        self.ansLineEdit.setEnabled(True)
+        self.ansLineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.ansLineEdit.setObjectName("ansLineEdit")
         self.gridLayout.addWidget(self.ansLineEdit, 1, 0, 1, 1)
 

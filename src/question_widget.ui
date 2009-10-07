@@ -26,7 +26,14 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLineEdit" name="ansLineEdit"/>
+    <widget class="QLineEdit" name="ansLineEdit">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
