@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'question_widget.ui'
 #
-# Created: Wed Oct  7 23:23:04 2009
+# Created: Thu Oct  8 14:12:11 2009
 #      by: PyQt4 UI code generator 4.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,12 @@ class Ui_QuestionForm(object):
     def setupUi(self, QuestionForm):
         QuestionForm.setObjectName("QuestionForm")
         QuestionForm.resize(476, 99)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Maximum, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(QuestionForm.sizePolicy().hasHeightForWidth())
+        QuestionForm.setSizePolicy(sizePolicy)
+        QuestionForm.setMaximumSize(QtCore.QSize(500, 16777215))
         self.gridLayout = QtGui.QGridLayout(QuestionForm)
         self.gridLayout.setObjectName("gridLayout")
         self.questionLabel = QtGui.QLabel(QuestionForm)
@@ -20,11 +26,12 @@ class Ui_QuestionForm(object):
         self.gridLayout.addWidget(self.questionLabel, 0, 0, 1, 2)
         self.ansLineEdit = QtGui.QLineEdit(QuestionForm)
         self.ansLineEdit.setEnabled(True)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ansLineEdit.sizePolicy().hasHeightForWidth())
         self.ansLineEdit.setSizePolicy(sizePolicy)
+        self.ansLineEdit.setMaximumSize(QtCore.QSize(700, 16777215))
         self.ansLineEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.ansLineEdit.setObjectName("ansLineEdit")
         self.gridLayout.addWidget(self.ansLineEdit, 2, 0, 1, 1)

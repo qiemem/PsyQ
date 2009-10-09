@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'view.ui'
 #
-# Created: Wed Oct  7 23:23:05 2009
+# Created: Thu Oct  8 14:12:11 2009
 #      by: PyQt4 UI code generator 4.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,13 +26,11 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem1, 1, 2, 1, 1)
         spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout.addItem(spacerItem2, 0, 1, 1, 1)
-        spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout.addItem(spacerItem3, 4, 1, 1, 1)
         self.instructionLabel = QtGui.QLabel(self.centralwidget)
         self.instructionLabel.setObjectName("instructionLabel")
         self.gridLayout.addWidget(self.instructionLabel, 3, 1, 1, 1)
-        spacerItem4 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem4, 2, 1, 1, 1)
+        spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem3, 2, 1, 1, 1)
         self.displayWidget = QtGui.QWidget(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(1)
@@ -46,6 +44,16 @@ class Ui_MainWindow(object):
         self.displayLayout.setObjectName("displayLayout")
         self.gridLayout_3.addLayout(self.displayLayout, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.displayWidget, 1, 1, 1, 1)
+        spacerItem4 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem4, 4, 1, 1, 1)
+        self.bugLabel = QtGui.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("Courier")
+        font.setPointSize(24)
+        self.bugLabel.setFont(font)
+        self.bugLabel.setScaledContents(True)
+        self.bugLabel.setObjectName("bugLabel")
+        self.gridLayout.addWidget(self.bugLabel, 5, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -58,4 +66,5 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Lucida Grande\'; font-size:13pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:24pt; color:#808080;\">Press Space to Continue</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.bugLabel.setText(QtGui.QApplication.translate("MainWindow", "Bug", None, QtGui.QApplication.UnicodeUTF8))
 

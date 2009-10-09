@@ -63,19 +63,6 @@
       </property>
      </spacer>
     </item>
-    <item row="4" column="1">
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item row="3" column="1">
      <widget class="QLabel" name="instructionLabel">
       <property name="text">
@@ -116,6 +103,35 @@ p, li { white-space: pre-wrap; }
         <layout class="QGridLayout" name="displayLayout"/>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="bugLabel">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Bug</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
