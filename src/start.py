@@ -258,6 +258,7 @@ class Main(QtGui.QMainWindow):
           
           Internally, the instructions from flow.txt are represented as a stack.
         """
+        sys.stderr.write("Loading experiment "+dirname+"\n")
         if not os.path.isdir(dirname):
             self.error_box("The experiment folder must be a directory.")
             self.close()
@@ -363,6 +364,7 @@ class Main(QtGui.QMainWindow):
         """
         Shows a message box with the given text. Seems a little finicky...
         """
+        sys.stderr.write(text+'\n')
         msg = QtGui.QMessageBox(self)
         msg.setText(text)
         msg.setWindowTitle('Something Bad Happened')
