@@ -1,0 +1,1 @@
+show('The experiment is running').now()show_message('Press space to continue').now()wait_for_space()show('I am now accepting input').now()print('bye')s = get_user_input()print('hi')show('You entered '+s).now()
