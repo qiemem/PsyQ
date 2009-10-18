@@ -16,22 +16,20 @@ class Main(QtGui.QMainWindow):
       experiment info processing.
     """
     
-    def __init__(self, parent=None):
+    def __init__(self, experiment_dirname, parent=None):
         """
         Sets up the ui (starts with no slide and a generic instruction_text).
         """
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui.bugLabel.hide()
-        self.current_slide = None
+        self.ui.bugLabel.setText('')
         self.data = []
         self.ui.userInputLineEdit.hide()
         self.ui.submitButton.hide()
-        self.p = ExperimentProcessor(self, self, 'test')
+        self.experiment_dirname = experiment_dirname
+        self.p = ExperimentProcessor(self, self, experiment_dirname)
 
-    def record(self, stuff):
-        print(stuff)
     def set_main_text(self, text):
         self.ui.mainDisplayLabel.setText(self.format_text(text))
 
@@ -41,11 +39,11 @@ class Main(QtGui.QMainWindow):
     def set_bug_text(self, text):
         self.ui.bugLabel.setText(text)
 
-    def store_data(self, new_data):
+    def record(self, new_data):
         """
         Adds new_data to the data to be outputed at the end.
         """
-        self.data+=new_data
+        self.data.append(new_data)
 
     def export_data(self, filename):
         """
@@ -53,10 +51,7 @@ class Main(QtGui.QMainWindow):
         """
         out_file = open(filename, 'w')
         for val in self.data:
-            if type(val)==str:
-                out_file.write('\n'+val)
-            else:
-                out_file.write('\t'+str(val))
+            out_file.write('\n'+str(val))
         out_file.close()
     
     def error_box(self, text):
@@ -82,20 +77,20 @@ class Main(QtGui.QMainWindow):
         Qt thing. Called when a key is a pressed. This handles space bar
         stuff, and closing when escape is pressed.
         """
-        print(event.key())
         if event.key() == QtCore.Qt.Key_Escape:
             self.close()
         if event.key() == QtCore.Qt.Key_Space:
-            print('emitting signal')
             self.emit(QtCore.SIGNAL('space_pressed'))
-            print('signal emitted')
 
     def showEvent(self, event):
         self.p.run_experiment()
         #pass
+    def closeEvent(self, event):
+        filename = os.path.join(self.experiment_dirname,str(datetime.now()))
+        self.export_data(filename)
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    myapp = Main()
+    myapp = Main(sys.argv[1])
     myapp.showFullScreen()
     sys.exit(app.exec_())

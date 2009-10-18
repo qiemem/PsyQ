@@ -1,3 +1,4 @@
-def faz():
-    x=5
-    return x
+while True:
+	n = f(n)
+	yield n
+

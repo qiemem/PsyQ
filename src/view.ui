@@ -205,5 +205,22 @@ p, li { white-space: pre-wrap; }
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>userInputLineEdit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>submitButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>468</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'view.ui'
 #
-# Created: Sat Oct 10 11:57:21 2009
+# Created: Tue Oct 13 19:31:55 2009
 #      by: PyQt4 UI code generator 4.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         self.bugLabel.setFont(font)
         self.bugLabel.setScaledContents(True)
         self.bugLabel.setObjectName("bugLabel")
-        self.gridLayout.addWidget(self.bugLabel, 7, 1, 1, 1)
+        self.gridLayout.addWidget(self.bugLabel, 7, 1, 1, 2)
         self.userInputLineEdit = QtGui.QLineEdit(self.centralwidget)
         self.userInputLineEdit.setObjectName("userInputLineEdit")
         self.gridLayout.addWidget(self.userInputLineEdit, 3, 1, 1, 1)
@@ -64,6 +64,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+        QtCore.QObject.connect(self.userInputLineEdit, QtCore.SIGNAL("returnPressed()"), self.submitButton.click)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

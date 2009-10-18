@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'question_widget.ui'
 #
-# Created: Sat Oct 10 11:57:21 2009
+# Created: Tue Oct 13 19:31:55 2009
 #      by: PyQt4 UI code generator 4.6
 #
 # WARNING! All changes made in this file will be lost!
