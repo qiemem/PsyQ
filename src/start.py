@@ -31,12 +31,24 @@ class Main(QtGui.QMainWindow):
         self.p = ExperimentProcessor(self, self, experiment_dirname)
 
     def set_main_text(self, text):
+        """
+        Set the center text to given text.
+        """
         self.ui.mainDisplayLabel.setText(self.format_text(text))
 
     def set_instruction_text(self, text):
+        """
+        Sets the lower text to the given text. Usually used to give simple
+        instructions, such as 'Press space to continue'.
+        """
         self.ui.instructionLabel.setText(self.format_text(text))
 
     def set_bug_text(self, text):
+        """
+        The bug text is a smaller, more unformatted looking label on the
+        bottom. If you wish to display text that looks like it shouldn't
+        be displayed.
+        """
         self.ui.bugLabel.setText(text)
 
     def record(self, new_data):
@@ -83,9 +95,17 @@ class Main(QtGui.QMainWindow):
             self.emit(QtCore.SIGNAL('space_pressed'))
 
     def showEvent(self, event):
+        """
+        A qt event called when the main window is displayed. Runs the
+        the experiment.
+        """
         self.p.run_experiment()
         #pass
     def closeEvent(self, event):
+        """
+        A qt event called when the main window is closed. Saves all
+        collected data.
+        """
         filename = os.path.join(self.experiment_dirname,str(datetime.now()))
         self.export_data(filename)
 
