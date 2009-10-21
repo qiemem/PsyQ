@@ -176,6 +176,7 @@ class ExperimentProcessor(QtCore.QObject):
     def wait_for_user_input(self):
         self.c.ui.submitButton.show()
         self.c.ui.userInputLineEdit.show()
+        self.c.ui.userInputLineEdit.setText('')
         self.c.ui.userInputLineEdit.setFocus()
         self.waiting_for_input = True
 

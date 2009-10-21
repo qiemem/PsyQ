@@ -49,7 +49,7 @@ class Main(QtGui.QMainWindow):
         bottom. If you wish to display text that looks like it shouldn't
         be displayed.
         """
-        self.ui.bugLabel.setText(text)
+        self.ui.bugLabel.setText(str(text))
 
     def record(self, new_data):
         """
@@ -82,7 +82,7 @@ class Main(QtGui.QMainWindow):
         """
         head = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:\'Lucida Grande\'; font-size:13pt; font-weight:400; font-style:normal;"><p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt; color:#404040;">'
         foot = '</span></p></body></html>'
-        return head+text+foot
+        return head+str(text)+foot
 
     def keyPressEvent(self, event):
         """
