@@ -90,7 +90,8 @@ class ExperimentProcessor(QtCore.QObject):
         gui_control to send 'space_pressed' when space is pressed). Executes
         experiment.py in order to setup user defined functions (especially the
         main function); however, if the user has defined things to be run at
-        the top level of the script, that will be executed immediately).
+        the top level of the script, that will be executed immediately). Finally,
+        reads in the questions file.
         """
         QtCore.QObject.__init__(self)
         self.c = gui_control
@@ -113,10 +114,18 @@ class ExperimentProcessor(QtCore.QObject):
         self.experiment_iter = l['main']()
 
     def __qt_connections(self):
+        """
+        Sets up the needed qt connections so that this class can listen for
+        space being pressed and submit button being clicked.
+        """
         self.connect(self.c, QtCore.SIGNAL('space_pressed'), self.space_pressed)
         self.connect(self.c.ui.submitButton, QtCore.SIGNAL('clicked()'), self.submit_clicked)
 
     def verify_dir(self, dirname):
+        """
+        Ensures that the given directory name actually exists and that it
+        contains the necessary files to run the experiment.
+        """
         if not os.path.isdir(dirname):
             self.c.error_box('The directory '+dirname+' does not exist.')
             return False
@@ -127,7 +136,14 @@ class ExperimentProcessor(QtCore.QObject):
             self.c.error_box('There is no questions.txt in that directory.')
             return False
         return True
+
     def extract_questions(self, filename):
+        """
+        Reads the given file, parsing it for questions. Questions and answers
+        must be separated by a blank line. Questions can take up any number of
+        lines as long as they contain no blank lines. Answers can only take up
+        one line.
+        """
         self.questions = []
         self.qtoa = {}
         infile = open(filename, 'r') 
@@ -143,13 +159,23 @@ class ExperimentProcessor(QtCore.QObject):
             l = infile.readline()
         shuffle(self.questions)
         return self.questions
+
     def run_experiment(self):
+        """
+        Runs the experiment script until its next yield statement (or until its
+        termination). If the script terminates, this function closes the main
+        window.
+        """
         try:
             self.experiment_iter.next()
         except StopIteration:
             self.c.close()
         
     def default_experiment_globals(self):
+        """
+        Returns a dictionary experiment script functions names to actual
+        functions. This essentially defines the experiment DSL.
+        """
         return {'show' : self.sched_action(self.c.set_main_text),
                 'clear' : self.sched_action(lambda : self.c.set_main_text('')),
                 'show_message' : self.sched_action(self.c.set_instruction_text),
@@ -167,13 +193,29 @@ class ExperimentProcessor(QtCore.QObject):
                 'time' : self.get_time}
 
     def sched_action(self, fn):
+        """
+        Creates a ScheduableAction to execute the given function. The
+        ScheduableAction is created so that any timer it makes will be
+        stored by this class. Thus, the ScheduableAction will not die
+        before this class does. This prevents the ScheduableAction from
+        dieing prematurely.
+        """
         a = ScheduableAction(fn, timer_storage=self.timer_storage)
         return a
 
     def wait_for_space(self):
+        """
+        Lets this object know its waiting for a space.
+        """
         self.waiting_for_space = True
 
     def wait_for_user_input(self):
+        """
+        Enables the showing of submitButton and userInputLineEdit in
+        self.c.ui, preparing the line edit to accept new input. Also,
+        let's this object know its waiting for the submit button to be
+        pressed.
+        """
         self.c.ui.submitButton.show()
         self.c.ui.userInputLineEdit.show()
         self.c.ui.userInputLineEdit.setText('')
@@ -181,11 +223,24 @@ class ExperimentProcessor(QtCore.QObject):
         self.waiting_for_input = True
 
     def space_pressed(self):
+        """
+        Should be called when space is pressed (a qt connection should
+        have been setup when this object was initialized). If this object
+        was waiting for space to be pressed, this function will tell it
+        that it no longer has to wait and to keep running the experiment.
+        """
         if self.waiting_for_space:
             self.waiting_for_space = False
             self.run_experiment()
 
     def submit_clicked(self):
+        """
+        Should be called when self.c.ui.submitButton is clicked (a qt
+        connection should have been setup when this object was
+        initialized). Stores the text from self.c.ui.userInputLineEdit.
+        Hides both the submit button and the line edit. Gives focus
+        back to the main window.
+        """
         if self.waiting_for_input:
             self.waiting_for_input = False
             self.user_input = str(self.c.ui.userInputLineEdit.text()).strip()
@@ -195,13 +250,25 @@ class ExperimentProcessor(QtCore.QObject):
             self.run_experiment()
             
     def pick_question(self):
+        """
+        Sets the current_question to the next question on the list of
+        questions. The question is removed from the list so that it will
+        not be asked again.
+        """
         self.current_question = self.questions.pop()
         return self.current_question
 
     def start_timer(self):
+        """
+        Records the current time. Calls to get_time() will give the time
+        since start_timer() was last called.
+        """
         self.last_time = time()
 
     def get_time(self):
+        """
+        Returns the amount of time since start_timer() was last called.
+        """
         return time()-self.last_time
 
     
