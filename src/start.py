@@ -62,7 +62,9 @@ class Main(QtGui.QMainWindow):
         Stores the data collected during the experiment in filename.
         """
         out_file = open(filename, 'w')
-        for val in self.data:
+        if self.data:
+            out_file.write(str(self.data[0]))
+        for val in self.data[1:]:
             out_file.write('\n'+str(val))
         out_file.close()
     
