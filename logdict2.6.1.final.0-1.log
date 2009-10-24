@@ -291,13 +291,12 @@ org: None -> None
   DEL org
 org: None -> None
   DEL org
-__main__: <Module __main__ /Users/headb/.tmp/pyinstaller/pyinstaller/support/useUnicode.py imports=[('encodings', 0, 0, -1)] binaries=[] datas=[]> -> <Module __main__ src/start.py imports=[('sys', 0, 0, -1), ('os', 0, 0, -1), ('random', 0, 0, -1), ('random.shuffle', 0, 0, -1), ('time', 0, 0, -1), ('time.time', 0, 0, -1), ('datetime', 0, 0, -1), ('datetime.datetime', 0, 0, -1), ('PyQt4', 0, 0, -1), ('PyQt4.QtCore', 0, 0, -1), ('PyQt4.QtGui', 0, 0, -1), ('view', 0, 0, -1), ('view.Ui_MainWindow', 0, 0, -1), ('instruction_widget', 0, 0, -1), ('instruction_widget.Ui_InstructionForm', 0, 0, -1), ('question_widget', 0, 0, -1), ('question_widget.Ui_QuestionForm', 0, 0, -1)] binaries=[] datas=[]>
+__main__: <Module __main__ /Users/headb/.tmp/pyinstaller/pyinstaller/support/useUnicode.py imports=[('encodings', 0, 0, -1)] binaries=[] datas=[]> -> <Module __main__ src/start.py imports=[('sys', 0, 0, -1), ('os', 0, 0, -1), ('random', 0, 0, -1), ('random.shuffle', 0, 0, -1), ('time', 0, 0, -1), ('time.time', 0, 0, -1), ('datetime', 0, 0, -1), ('datetime.datetime', 0, 0, -1), ('PyQt4', 0, 0, -1), ('PyQt4.QtCore', 0, 0, -1), ('PyQt4.QtGui', 0, 0, -1), ('view', 0, 0, -1), ('view.Ui_MainWindow', 0, 0, -1), ('experiment_dsl', 0, 0, -1), ('experiment_dsl.ExperimentProcessor', 0, 0, -1)] binaries=[] datas=[]>
 PyQt4: None -> <Module PyQt4 /Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages/PyQt4/__init__.pyc imports=[] binaries=[] datas=[]>
 PyQt4.QtCore: None -> <Module PyQt4.QtCore /Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages/PyQt4/QtCore.so imports=[] binaries=[] datas=[]>
 PyQt4.QtGui: None -> <Module PyQt4.QtGui /Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages/PyQt4/QtGui.so imports=[] binaries=[] datas=[]>
 view: None -> <Module view /Users/headb/Development/PsyQ/src/view.pyc imports=[('PyQt4', 0, 0, -1), ('PyQt4.QtCore', 0, 0, -1), ('PyQt4.QtGui', 0, 0, -1)] binaries=[] datas=[]>
-instruction_widget: None -> <Module instruction_widget /Users/headb/Development/PsyQ/src/instruction_widget.pyc imports=[('PyQt4', 0, 0, -1), ('PyQt4.QtCore', 0, 0, -1), ('PyQt4.QtGui', 0, 0, -1)] binaries=[] datas=[]>
-question_widget: None -> <Module question_widget /Users/headb/Development/PsyQ/src/question_widget.pyc imports=[('PyQt4', 0, 0, -1), ('PyQt4.QtCore', 0, 0, -1), ('PyQt4.QtGui', 0, 0, -1)] binaries=[] datas=[]>
+experiment_dsl: None -> <Module experiment_dsl /Users/headb/Development/PsyQ/src/experiment_dsl.pyc imports=[('PyQt4', 0, 0, -1), ('PyQt4.QtCore', 0, 0, -1), ('PyQt4.QtGui', 0, 0, -1), ('random', 0, 0, -1), ('random.shuffle', 0, 0, -1), ('Queue', 0, 0, -1), ('Queue.Queue', 0, 0, -1), ('time', 0, 0, -1), ('time.time', 0, 0, -1), ('os', 0, 0, -1), ('threading', 0, 0, -1)] binaries=[] datas=[]>
 _emx_link: None -> None
   DEL _emx_link
 _emx_link: None -> None
@@ -329,3 +328,13 @@ PyQt4._qt: None -> None
   DEL PyQt4._qt
 PyQt4._qt: None -> None
   DEL PyQt4._qt
+Queue: None -> <Module Queue /Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/Queue.pyc imports=[('time', 0, 0, -1), ('time.time', 0, 0, -1), ('collections', 0, 0, -1), ('collections.deque', 0, 0, -1), ('heapq', 0, 0, -1), ('threading', 1, 0, -1), ('dummy_threading', 1, 1, -1)] binaries=[] datas=[]>
+dummy_threading: None -> <Module dummy_threading /Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/dummy_threading.pyc imports=[('sys', 0, 0, -1), ('sys.modules', 0, 0, -1), ('dummy_thread', 0, 0, -1), ('threading', 0, 0, -1), ('_dummy_threading', 0, 0, -1), ('_dummy_threading.*', 0, 0, -1), ('_dummy_threading', 0, 0, -1), ('_dummy_threading.__all__', 0, 0, -1)] binaries=[] datas=[]>
+_dummy_threading: None -> None
+  DEL _dummy_threading
+_dummy_threading: None -> None
+  DEL _dummy_threading
+_dummy_threading: None -> None
+  DEL _dummy_threading
+_dummy_threading: None -> None
+  DEL _dummy_threading

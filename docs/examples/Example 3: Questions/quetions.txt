@@ -1,0 +1,21 @@
+What color is the sky on a clear day?
+
+blue
+
+What color is an orange?
+
+orange
+
+What is the answer to life, the universe, and everything?
+
+42
+
+A bear travels one mile South, one mile East, and one mile North and arrives back where it started.
+What color is the bears fur if the bear is native in that land?
+Also, this is
+an
+example of
+a multi-line
+question.
+
+white

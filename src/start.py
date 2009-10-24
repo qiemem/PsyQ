@@ -108,7 +108,7 @@ class Main(QtGui.QMainWindow):
         A qt event called when the main window is closed. Saves all
         collected data.
         """
-        filename = os.path.join(self.experiment_dirname,str(datetime.now()))
+        filename = os.path.join(self.experiment_dirname,str(datetime.now())+'.txt')
         self.export_data(filename)
 
 if __name__ == "__main__":

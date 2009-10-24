@@ -44,11 +44,13 @@ class ScheduableAction:
 
     def __todo(self):
         """
-        Returns this ScheduableAction's function with arguments applied in
-        a callable form. Thus, self.__todo()() is equivalent to
-        self.fn(*self.args, **self.kwgs)
+        Executes self.fn(*self.args, **self.kwgs) so that the function of
+        this ScheduableAction can be passed around with its arguments in
+        place.
         """
-        self.fn(*self.args, **self.kwgs)
+        a = self.args
+        k = self.kwgs
+        return (lambda : self.fn(*a,**k))
 
     def after(self, ms):
         """
@@ -67,7 +69,7 @@ class ScheduableAction:
         """
         timer = QtCore.QTimer()
         timer.setSingleShot(True)
-        timer.connect(timer, QtCore.SIGNAL('timeout()'), self.__todo)
+        timer.connect(timer, QtCore.SIGNAL('timeout()'), self.__todo())
         timer.start(ms)
         if self.timer_storage != None:
             self.timer_storage.append(timer)
@@ -77,7 +79,7 @@ class ScheduableAction:
         """
         Calls the function with the given arguments immediately. No scheduling occurs.
         """
-        self.__todo()
+        self.__todo()()
 
 class ExperimentProcessor(QtCore.QObject):
     """
@@ -197,9 +199,8 @@ class ExperimentProcessor(QtCore.QObject):
         """
         Creates a ScheduableAction to execute the given function. The
         ScheduableAction is created so that any timer it makes will be
-        stored by this class. Thus, the ScheduableAction will not die
-        before this class does. This prevents the ScheduableAction from
-        dieing prematurely.
+        stored by this class. Thus, the timers will not die before this 
+        class does. This prevents the timers from dieing prematurely.
         """
         a = ScheduableAction(fn, timer_storage=self.timer_storage)
         return a
