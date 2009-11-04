@@ -1,0 +1,93 @@
+To write a new experiment, create a new directory with the name of the experiment. Now, create a file called 'experiment.py' and a file called 'questions.txt'. You can use any text editor you like to do this, such as TextEdit. I would highly recommend NOT using something like Word. Once you have editted these files to your liking (see below), drag the directory onto the 'PsyQ' application to run the experiment.
+
+Though the example are definitely the best way to learn how to write experiments, here are some basic rules.
+
+
+BASIC FORMATTING:
+
+experiment.py -
+This file contains instructions for how the experiment should be run. The first (nonempty) line should most likely be:
+
+def main():
+
+unless you really know what you're doing. All lines after this must be indented at least once. See the examples for what this looks like.
+
+questions.txt -
+This file contains questions and answers to be used throughout the experiment. Each question and answer must be seperated by exactly one blank line. Questions can take up multiple lines, but answers can only be one line. To do more advanced formatting of questions, you can use html tags. See Example 3 for a demonstration of probably anything you would want to do.
+
+
+GLOSSARY OF FUNCTIONS:
+
+
+
+Display functions:
+
+show(text) - Sets the main display (in the center of the screen) to text. This should be used to display instructions and questions to the subject.
+
+clear() - Clears the main display. Equivalent to show('').
+
+show_message(text) - Sets the message display (in the lower part of the screen) to text. This should be used to display immediate instructions, such as 'Press space to continue'.
+
+clear_message() - Clears the message display. Equivalent to show_message('').
+
+show_bug(text) - Sets the bug display (in the bottom of the screen) to text. This should be used to display text to the subject that looks like it should not have been displayed.
+
+clear_bug() - Clears the bug display. Equivalent to show_bug('').
+
+
+
+Display function schedulers:
+
+The display functions will not do anything unless they are appended with one of the following:
+
+.now() - Executes the action immediately. E.g. show('I will be display immediately').now()
+
+.after(ms) - Executes the action after ms milliseconds E.g. show('I will be displayed after 3 and a half seconds').after(3500)
+
+To cancel a scheduled action, you can do something like:
+scheduled_action = show('I will be canceled').after(1000)
+scheduled_action.stop()
+
+
+
+User Input:
+
+All user input functions beginning with 'for_' must come after the word yield or else they won't do anything. E.g.
+yield for_space()
+or
+yield for_user_input()
+
+for_space() - Waits for a space before continuing.
+
+for_user_input() - Displays an input box and a submit button and waits for the user to enter something.
+
+user_input() - Returns the last thing the user entered.
+
+
+
+Questions:
+
+pick_question() - Sets the current function to a random question. The same question can never be picked twice.
+
+question() - Returns the current question.
+
+answer() - Returns the answer to the current question.
+
+is_correct() - Checks user_input() against answer(), ignoring leading and trailing whitespace as well as capitilization.
+
+
+
+Recording Data:
+
+record(data) - Adds data to the list of things to be saved when the experiment ends. All data will be stored in a file labelled by the date and time the experiment ended.
+
+
+
+
+Timer Functions:
+
+start_timer() - Resets the timer to zero.
+
+time() - Returns the current value of the timer in seconds. Will usually be accurate up to at least milliseconds, probably more so depending on your system.
+
+

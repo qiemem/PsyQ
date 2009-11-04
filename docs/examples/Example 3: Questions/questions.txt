@@ -1,0 +1,32 @@
+What color is the sky on a clear day?
+
+blue
+
+What color is an orange?
+
+orange
+
+What is the answer to life, the universe, and everything?
+
+42
+
+A bear travels one mile South, one mile East, and one mile North and arrives back where it started.
+What color is the bears fur if the bear is native in that land?
+Also, this is
+an
+example of
+a multi-line
+question.
+
+white
+
+Captilization and leading/trailing white space does not matter for answers.
+The answer to this question is ' AnSwEr ', but you can enter 'answer'.
+
+ AnSwEr 
+
+For <i>special</i> <b>formatting</b> you can use
+<h1>HTML</h1> tags.
+What kind of tags can you use?
+
+html

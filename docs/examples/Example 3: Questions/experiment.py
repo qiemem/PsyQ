@@ -13,13 +13,16 @@ def main():
         pick_question()
         show(question()).now()
         show_message('Press space to answer.').now()
-        bug = show_bug(answer()).after(1000)
+        bug = show_bug(answer()).after(2000)
         yield for_space()
         clear_message().now()
         bug.stop()
         clear_bug().now()
         yield for_user_input()
-        if user_input()==answer():
+        # Use is_correct() function to test if something is equal to
+        # answer(). It automatically ignores white space and
+        # capitilization.
+        if is_correct(user_input()):
             show('Correct!').now()
             num_correct += 1
         else:

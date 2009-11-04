@@ -153,7 +153,7 @@ class ExperimentProcessor(QtCore.QObject):
         while l!='':
             self.questions.append('')
             while l.strip()!='':
-                self.questions[-1]+=l 
+                self.questions[-1]+=l+'<br/>' 
                 l = infile.readline()
             self.questions[-1].strip()
             l = infile.readline()
@@ -193,6 +193,7 @@ class ExperimentProcessor(QtCore.QObject):
                 'for_user_input' : self.wait_for_user_input,
                 'user_input' : (lambda : self.user_input),
                 'start_timer' : self.start_timer,
+                'is_correct' : self.is_correct,
                 'time' : self.get_time}
 
     def sched_action(self, fn):
@@ -204,6 +205,9 @@ class ExperimentProcessor(QtCore.QObject):
         """
         a = ScheduableAction(fn, timer_storage=self.timer_storage)
         return a
+
+    def is_correct(self, guess):
+        return guess.strip().upper() == self.qtoa[self.current_question].strip().upper()
 
     def wait_for_space(self):
         """
