@@ -113,6 +113,11 @@ class Main(QtGui.QMainWindow):
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    myapp = Main(sys.argv[1])
+    experiment_dir = None
+    if(len(sys.argv)>=2):
+        experiment_dir = sys.argv[1]
+    else:
+        experiment_dir = str(QtGui.QFileDialog.getExistingDirectory())
+    myapp = Main(experiment_dir)
     myapp.showFullScreen()
     sys.exit(app.exec_())
