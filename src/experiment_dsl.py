@@ -1,12 +1,9 @@
-from PyQt4 import QtCore, QtGui
 from random import shuffle
-from Queue import Queue
 from time import time
 import os
-import threading
 
 class ScheduableAction:
-    def __init__(self, fn, timer_storage=None, *args, **kwgs):
+    def __init__(self, widget, fn, *args, **kwgs):
         """
         Creates a new ScheduableAction that can execute the given function.
 
@@ -23,8 +20,8 @@ class ScheduableAction:
         """
         self.args = args
         self.kwgs = kwgs
-        self.timer_storage = timer_storage
         self.fn = fn
+        self.root = widget 
 
     def __call__(self, *args, **kwgs):
         """
@@ -36,9 +33,9 @@ class ScheduableAction:
 
         **kwgs - The optional, keyword arguments.
         """
-        if(args):
+        if args:
             self.args = args
-        if(kwgs):
+        if kwgs:
             self.kwgs = kwgs
         return self
 
@@ -52,28 +49,24 @@ class ScheduableAction:
         k = self.kwgs
         return (lambda : self.fn(*a,**k))
 
-    def after(self, ms):
+    def after(self, t):
         """
-        Waits the given number of ms and then executes the function with
+        Waits the given number of seconds and then executes the function with
         the arguments applied.
 
         INPUTS:
 
-        ms - The number of milliseconds to wait before executing the action.
+        t - The number of seconds until the function executes. Decimals
+        allowed.
 
         OUTPUTS:
 
-        The QTimer object who's timeout() signals the function to be called.
-        Thus, if you call t = sa().after(5000) and then t.stop() within 5
-        seconds, the function will not be called.
+        The scheduled actions id, modified with a stop method.
         """
-        timer = QtCore.QTimer()
-        timer.setSingleShot(True)
-        timer.connect(timer, QtCore.SIGNAL('timeout()'), self.__todo())
-        timer.start(ms)
-        if self.timer_storage != None:
-            self.timer_storage.append(timer)
-        return timer
+        a = self.args
+        k = self.kwgs
+        id = self.root.after(t, self.__todo())
+        return ActionStopper(self.root, id)
 
     def now(self):
         """
@@ -81,47 +74,40 @@ class ScheduableAction:
         """
         self.__todo()()
 
-class ExperimentProcessor(QtCore.QObject):
+class ActionStopper(object):
+    def __init__(self, master, id):
+        self.root = master
+        self.id = id
+
+    def stop(self):
+        self.root.after_cancel(self.id)
+
+class ExperimentProcessor(object):
     """
     Processes and runs the experiment script. This class is the
     link between the experiment script and the gui.
     """
     def __init__(self, gui_control, data_recorder, dirname):
         """
-        Prepares the experiment to be run. Qt signals are hooked up (expects)
-        gui_control to send 'space_pressed' when space is pressed). Executes
-        experiment.py in order to setup user defined functions (especially the
-        main function); however, if the user has defined things to be run at
-        the top level of the script, that will be executed immediately). Finally,
-        reads in the questions file.
+        Prepares the experiment to be run. Executes experiment.py in order to
+        setup user defined functions (especially the main function); however,
+        if the user has defined things to be run at the top level of the 
+        script, that will be executed immediately). Finally, reads in the 
+        questions file.
         """
-        QtCore.QObject.__init__(self)
         self.c = gui_control
         if not self.verify_dir(dirname):
             self.c.close()
-        self.__qt_connections()
-        #self.qa_map = qa_map
-        #self.questions = self.qa_map.keys()
         self.data_recorder = data_recorder
-        #shuffle(self.questions)
         self.current_question = None
         self.waiting_for_space = False
         self.waiting_for_input = False
-        self.timer_storage = []
         question_fn = os.path.join(dirname,'questions.txt')
         self.extract_questions(question_fn)
         self.experiment_script = os.path.join(dirname,'experiment.py')
         l = {}
         execfile(self.experiment_script, self.default_experiment_globals(), l)
         self.experiment_iter = l['main']()
-
-    def __qt_connections(self):
-        """
-        Sets up the needed qt connections so that this class can listen for
-        space being pressed and submit button being clicked.
-        """
-        self.connect(self.c, QtCore.SIGNAL('space_pressed'), self.space_pressed)
-        self.connect(self.c.ui.submitButton, QtCore.SIGNAL('clicked()'), self.submit_clicked)
 
     def verify_dir(self, dirname):
         """
@@ -172,7 +158,7 @@ class ExperimentProcessor(QtCore.QObject):
         try:
             self.experiment_iter.next()
         except StopIteration:
-            self.c.close()
+            self.c.close(None)
         
     def default_experiment_globals(self):
         """
@@ -182,9 +168,11 @@ class ExperimentProcessor(QtCore.QObject):
         return {'show' : self.sched_action(self.c.set_main_text),
                 'clear' : self.sched_action(lambda : self.c.set_main_text('')),
                 'show_message' : self.sched_action(self.c.set_instruction_text),
-                'clear_message' : self.sched_action(lambda : self.c.set_instruction_text('')),
+                'clear_message' : 
+                    self.sched_action(lambda : self.c.set_instruction_text('')),
                 'show_bug' : self.sched_action(self.c.set_bug_text),
-                'clear_bug' : self.sched_action(lambda : self.c.set_bug_text('')),
+                'clear_bug' : 
+                    self.sched_action(lambda : self.c.set_bug_text('')),
                 'pick_question' : self.pick_question,
                 'question' : (lambda : self.current_question),
                 'answer' : (lambda : self.qtoa[self.current_question]),
@@ -203,11 +191,13 @@ class ExperimentProcessor(QtCore.QObject):
         stored by this class. Thus, the timers will not die before this 
         class does. This prevents the timers from dieing prematurely.
         """
-        a = ScheduableAction(fn, timer_storage=self.timer_storage)
+        a = ScheduableAction(self.c.root, fn)
         return a
 
     def is_correct(self, guess):
-        return guess.strip().upper() == self.qtoa[self.current_question].strip().upper()
+        formatted_guess = guess.strip().upper()
+        formatted_ans = self.qtoa[self.current_question].strip().upper()
+        return formatted_guess == formatted_ans
 
     def wait_for_space(self):
         """
@@ -222,10 +212,7 @@ class ExperimentProcessor(QtCore.QObject):
         let's this object know its waiting for the submit button to be
         pressed.
         """
-        self.c.ui.submitButton.show()
-        self.c.ui.userInputLineEdit.show()
-        self.c.ui.userInputLineEdit.setText('')
-        self.c.ui.userInputLineEdit.setFocus()
+        self.c.get_user_input()
         self.waiting_for_input = True
 
     def space_pressed(self):
@@ -249,10 +236,7 @@ class ExperimentProcessor(QtCore.QObject):
         """
         if self.waiting_for_input:
             self.waiting_for_input = False
-            self.user_input = str(self.c.ui.userInputLineEdit.text()).strip()
-            self.c.ui.submitButton.hide()
-            self.c.ui.userInputLineEdit.hide()
-            self.c.setFocus()
+            self.user_input = self.c.user_input.strip()
             self.run_experiment()
             
     def pick_question(self):

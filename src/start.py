@@ -2,46 +2,90 @@
 
 import sys
 import os
-from random import shuffle
-from time import time
+import Tkinter
+import tkMessageBox
+import tkFileDialog
+import tkFont
 from datetime import datetime
-from PyQt4 import QtCore, QtGui
-from view import Ui_MainWindow
 from experiment_dsl import ExperimentProcessor
         
-class Main(QtGui.QMainWindow):
+class Main(object):
     """
     The main class of the program. This coordinates activity between the
       various uis, the slides, user interaction, data collection, and
       experiment info processing.
     """
     
-    def __init__(self, experiment_dirname, parent=None):
+    def __init__(self, master, experiment_dirname, parent=None):
         """
         Sets up the ui (starts with no slide and a generic instruction_text).
         """
-        QtGui.QWidget.__init__(self, parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        self.ui.bugLabel.setText('')
-        self.data = []
-        self.ui.userInputLineEdit.hide()
-        self.ui.submitButton.hide()
+        self.root = master
+        w = self.root.winfo_screenwidth()
+        h = self.root.winfo_screenheight()
+        self.root.overrideredirect(1)
+        self.root.geometry("%dx%d+0+0" % (w, h))
         self.experiment_dirname = experiment_dirname
+        self.data = []
         self.p = ExperimentProcessor(self, self, experiment_dirname)
+
+        self.user_input = ""
+
+        self.create_widgets()
+        self.setup_event_bindings()
+    def run(self):
+        self.p.run_experiment()
+        self.root.mainloop()
+
+    def create_widgets(self):
+        self.font = tkFont.Font(self.root, 'Lucida 26')
+        self.user_input_font = tkFont.Font(self.root, 'Lucida 18')
+
+        self.bug_label = Tkinter.Label(self.root)
+        self.bug_label.pack(side = "bottom")
+
+        self.top_padding = Tkinter.Frame(self.root, height = 400)
+        self.top_padding.pack(fill='x')
+
+        self.main_display_label = Tkinter.Label(self.root, font = self.font, fg="gray30")
+        self.main_display_label.pack(side = "top", padx = 200, fill="both")
+
+        self.user_input_frame = Tkinter.Frame(self.root)
+        self.user_input_entry = Tkinter.Entry(self.user_input_frame, 
+                                              font = self.user_input_font)
+        self.submit_button = Tkinter.Button(self.user_input_frame,
+                                            text = "Submit", 
+                                            command = self.submit_input)
+        self.user_input_frame.pack(side = "top", pady = 30)
+
+        self.instruction_label = Tkinter.Label(self.root, font = self.font, fg="gray50")
+        self.instruction_label.pack(side = "top", padx = 300, fill = "x")
+
+
+    def get_user_input(self):
+        self.user_input_entry.pack(side = "left", anchor="e")
+        self.submit_button.pack(side = "right", anchor="w")
+        self.user_input_entry.focus_get()
+
+    def submit_input(self):
+        self.user_input = self.user_input_entry.get()
+        self.user_input_entry.configure(text="")
+        self.user_input_entry.pack_forget()
+        self.submit_button.pack_forget()
+        self.p.submit_clicked()
 
     def set_main_text(self, text):
         """
         Set the center text to given text.
         """
-        self.ui.mainDisplayLabel.setText(self.format_text(text))
+        self.main_display_label.configure(text=text)
 
     def set_instruction_text(self, text):
         """
         Sets the lower text to the given text. Usually used to give simple
         instructions, such as 'Press space to continue'.
         """
-        self.ui.instructionLabel.setText(self.format_text(text))
+        self.instruction_label.configure(text = text)
 
     def set_bug_text(self, text):
         """
@@ -49,7 +93,7 @@ class Main(QtGui.QMainWindow):
         bottom. If you wish to display text that looks like it shouldn't
         be displayed.
         """
-        self.ui.bugLabel.setText(str(text))
+        self.bug_label.configure(text=text)
 
     def record(self, new_data):
         """
@@ -73,10 +117,7 @@ class Main(QtGui.QMainWindow):
         Shows a message box with the given text. Seems a little finicky...
         """
         sys.stderr.write(text+'\n')
-        msg = QtGui.QMessageBox(self)
-        msg.setText(text)
-        msg.setWindowTitle('Something Bad Happened')
-        msg.open()
+        tkMessageBox.showerror("Error", text)
 
     def format_text(self, text):
         """
@@ -86,38 +127,26 @@ class Main(QtGui.QMainWindow):
         foot = '</span></p></body></html>'
         return head+str(text)+foot
 
-    def keyPressEvent(self, event):
-        """
-        Qt thing. Called when a key is a pressed. This handles space bar
-        stuff, and closing when escape is pressed.
-        """
-        if event.key() == QtCore.Qt.Key_Escape:
-            self.close()
-        if event.key() == QtCore.Qt.Key_Space:
-            self.emit(QtCore.SIGNAL('space_pressed'))
+    def setup_event_bindings(self):
+        self.root.bind("<space>", self.on_space)
+        self.root.bind("<Escape>", self.close)
 
-    def showEvent(self, event):
-        """
-        A qt event called when the main window is displayed. Runs the
-        the experiment.
-        """
-        self.p.run_experiment()
-        #pass
-    def closeEvent(self, event):
-        """
-        A qt event called when the main window is closed. Saves all
-        collected data.
-        """
+    def on_space(self, event):
+        print('space pressed')
+        self.p.space_pressed()
+
+    def close(self, event):
+        print('close')
         filename = os.path.join(self.experiment_dirname,str(datetime.now())+'.txt')
         self.export_data(filename)
+        self.root.quit()
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    root = Tkinter.Tk()
     experiment_dir = None
     if(len(sys.argv)>=2):
         experiment_dir = sys.argv[1]
     else:
-        experiment_dir = str(QtGui.QFileDialog.getExistingDirectory())
-    myapp = Main(experiment_dir)
-    myapp.showFullScreen()
-    sys.exit(app.exec_())
+        experiment_dir = tkFileDialog.askdirectory(master=root)
+    myapp = Main(root,experiment_dir)
+    myapp.run()
