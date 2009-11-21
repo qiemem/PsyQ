@@ -18,7 +18,7 @@ class Main(object):
     
     def __init__(self, master, experiment_dirname, parent=None):
         """
-        Sets up the ui (starts with no slide and a generic instruction_text).
+        Sets up the ui (starts with no slide and a generic instruction_text).  
         """
         self.root = master
         w = self.root.winfo_screenwidth()
@@ -44,13 +44,17 @@ class Main(object):
         self.bug_label = Tkinter.Label(self.root)
         self.bug_label.pack(side = "bottom")
 
-        self.top_padding = Tkinter.Frame(self.root, height = 400)
+        self.top_padding = Tkinter.Frame(self.root, height = 300)
         self.top_padding.pack(fill='x')
 
-        self.main_display_label = Tkinter.Label(self.root, font = self.font, fg="gray30")
-        self.main_display_label.pack(side = "top", padx = 200, fill="both")
+        self.main_display_label = Tkinter.Label(self.root, 
+                                                font = self.font, 
+                                                fg="gray30",
+                                                wraplength=800)
+        self.main_display_label.pack(side = "top", fill="both")
 
-        self.user_input_frame = Tkinter.Frame(self.root)
+        self.user_input_frame = Tkinter.Frame(self.root,
+                                              height = 30)
         self.user_input_entry = Tkinter.Entry(self.user_input_frame, 
                                               font = self.user_input_font)
         self.submit_button = Tkinter.Button(self.user_input_frame,
@@ -58,18 +62,24 @@ class Main(object):
                                             command = self.submit_input)
         self.user_input_frame.pack(side = "top", pady = 30)
 
-        self.instruction_label = Tkinter.Label(self.root, font = self.font, fg="gray50")
-        self.instruction_label.pack(side = "top", padx = 300, fill = "x")
+        self.instruction_label = Tkinter.Label(self.root,
+                                               font = self.font, 
+                                               fg="gray40",
+                                               wraplength=800)
+        self.instruction_label.pack(side = "top", fill = "x")
 
 
     def get_user_input(self):
+        #self.user_input_entry.delete(0, 'end')
         self.user_input_entry.pack(side = "left", anchor="e")
+        self.user_input_entry.delete(0, 'end')
+        self.user_input_entry.bind("<Return>", 
+                                   lambda e : self.submit_button.invoke())
         self.submit_button.pack(side = "right", anchor="w")
-        self.user_input_entry.focus_get()
+        self.user_input_entry.focus_set()
 
     def submit_input(self):
         self.user_input = self.user_input_entry.get()
-        self.user_input_entry.configure(text="")
         self.user_input_entry.pack_forget()
         self.submit_button.pack_forget()
         self.p.submit_clicked()

@@ -63,13 +63,13 @@ class Main(object):
 
 
     def get_user_input(self):
+        self.user_input_entry.delete(0, 'end')
         self.user_input_entry.pack(side = "left", anchor="e")
         self.submit_button.pack(side = "right", anchor="w")
         self.user_input_entry.focus_get()
 
     def submit_input(self):
         self.user_input = self.user_input_entry.get()
-        self.user_input_entry.configure(text="")
         self.user_input_entry.pack_forget()
         self.submit_button.pack_forget()
         self.p.submit_clicked()
