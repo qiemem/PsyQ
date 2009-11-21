@@ -139,7 +139,7 @@ class ExperimentProcessor(object):
         while l!='':
             self.questions.append('')
             while l.strip()!='':
-                self.questions[-1]+=l+'<br/>' 
+                self.questions[-1]+=l 
                 l = infile.readline()
             self.questions[-1].strip()
             l = infile.readline()

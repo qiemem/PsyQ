@@ -11,6 +11,7 @@ def main():
     show_message('I will be shown below the main text.').now()
     show_message('I will be shown after four and a half seconds.').after(4500)
     show('I will never be shown because Bryan forgot the to put .now() or .after(ms) after me.')
+    show_bug('I will be shown immediately as a bug.').now()
     show_bug('I will be shown \'unformatted\' at the bottom of the screen after three seconds.').after(3000)
     # To put a single line comment in the middle of your function
     # begin the line with a #, like this
