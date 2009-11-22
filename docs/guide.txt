@@ -1,6 +1,6 @@
 To write a new experiment, create a new directory with the name of the experiment. Now, create a file called 'experiment.py' and a file called 'questions.txt'. You can use any text editor you like to do this, such as TextEdit. I would highly recommend NOT using something like Word. Once you have editted these files to your liking (see below), drag the directory onto the 'PsyQ' application to run the experiment.
 
-Though the example are definitely the best way to learn how to write experiments, here are some basic rules.
+Though the examples are definitely the best way to learn how to write experiments, here are some basic rules.
 
 
 BASIC FORMATTING:
@@ -13,11 +13,10 @@ def main():
 unless you really know what you're doing. All lines after this must be indented at least once. See the examples for what this looks like.
 
 questions.txt -
-This file contains questions and answers to be used throughout the experiment. Each question and answer must be seperated by exactly one blank line. Questions can take up multiple lines, but answers can only be one line. To do more advanced formatting of questions, you can use html tags. See Example 3 for a demonstration of probably anything you would want to do.
+This file contains questions and answers to be used throughout the experiment. Each question and answer must be seperated by exactly one blank line. Questions can take up multiple lines, but answers can only be one line. See Example 3 for a demonstration of probably anything you would want to do.
 
 
 GLOSSARY OF FUNCTIONS:
-
 
 
 Display functions:
@@ -40,7 +39,7 @@ Display function schedulers:
 
 The display functions will not do anything unless they are appended with one of the following:
 
-.now() - Executes the action immediately. E.g. show('I will be display immediately').now()
+.now() - Executes the action immediately. E.g. show('I will be displayed immediately').now()
 
 .after(ms) - Executes the action after ms milliseconds E.g. show('I will be displayed after 3 and a half seconds').after(3500)
 
