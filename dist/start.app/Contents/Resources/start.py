@@ -20,6 +20,7 @@ class Main(object):
         """
         Sets up the ui (starts with no slide and a generic instruction_text).  
         """
+        self.exit_status = 0
         self.root = master
         w = self.root.winfo_screenwidth()
         h = self.root.winfo_screenheight()
@@ -36,13 +37,11 @@ class Main(object):
     def run(self):
         self.p.run_experiment()
         self.root.mainloop()
+        return self.exit_status
 
     def create_widgets(self):
         self.font = tkFont.Font(self.root, 'Lucida 26')
         self.user_input_font = tkFont.Font(self.root, 'Lucida 18')
-
-        self.bug_label = Tkinter.Label(self.root)
-        self.bug_label.pack(side = "bottom")
 
         self.top_padding = Tkinter.Frame(self.root, height = 300)
         self.top_padding.pack(fill='x')
@@ -67,6 +66,9 @@ class Main(object):
                                                fg="gray40",
                                                wraplength=800)
         self.instruction_label.pack(side = "top", fill = "x")
+
+        self.bug_label = Tkinter.Label(self.root)
+        self.bug_label.pack(side = "bottom", pady=30)
 
 
     def get_user_input(self):
@@ -127,15 +129,8 @@ class Main(object):
         Shows a message box with the given text. Seems a little finicky...
         """
         sys.stderr.write(text+'\n')
+        self.exit_status = 1
         tkMessageBox.showerror("Error", text)
-
-    def format_text(self, text):
-        """
-        Places text in html that makes it big and look nice.
-        """
-        head = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"><html><head><meta name="qrichtext" content="1" /><style type="text/css">p, li { white-space: pre-wrap; }</style></head><body style=" font-family:\'Lucida Grande\'; font-size:13pt; font-weight:400; font-style:normal;"><p align="center" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:24pt; color:#404040;">'
-        foot = '</span></p></body></html>'
-        return head+str(text)+foot
 
     def setup_event_bindings(self):
         self.root.bind("<space>", self.on_space)
@@ -156,5 +151,7 @@ if __name__ == "__main__":
         experiment_dir = sys.argv[1]
     else:
         experiment_dir = tkFileDialog.askdirectory(master=root)
+    if experiment_dir == '':
+        sys.exit(0)
     myapp = Main(root,experiment_dir)
-    myapp.run()
+    sys.exit(myapp.run())

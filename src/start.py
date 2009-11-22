@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import os
 import Tkinter
@@ -59,7 +58,7 @@ class Main(object):
         self.submit_button = Tkinter.Button(self.user_input_frame,
                                             text = "Submit", 
                                             command = self.submit_input)
-        self.user_input_frame.pack(side = "top", pady = 30)
+        self.user_input_frame.pack(side = "top", pady = 10)
 
         self.instruction_label = Tkinter.Label(self.root,
                                                font = self.font, 

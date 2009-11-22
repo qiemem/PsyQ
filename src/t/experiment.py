@@ -1,7 +1,14 @@
 def main():
-    import sys
-    print('in main')
-    foo='bar'
-    for k in locals():
-        print(k)
-    yield for_space()
+    show("""
+         one
+         two
+         three
+         four
+         five
+         six
+         seven
+         eight
+         nine
+         ten
+         """).now()
+    yield for_user_input()
