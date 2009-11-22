@@ -33,6 +33,7 @@ class Main(object):
 
         self.create_widgets()
         self.setup_event_bindings()
+
     def run(self):
         self.p.run_experiment()
         self.root.mainloop()
@@ -49,7 +50,7 @@ class Main(object):
                                                 font = self.font, 
                                                 fg="gray30",
                                                 wraplength=800)
-        self.main_display_label.pack(side = "top", fill="both")
+        self.main_display_label.pack(side = "top")
 
         self.user_input_frame = Tkinter.Frame(self.root,
                                               height = 30)
@@ -64,26 +65,32 @@ class Main(object):
                                                font = self.font, 
                                                fg="gray40",
                                                wraplength=800)
-        self.instruction_label.pack(side = "top", fill = "x")
+        self.instruction_label.pack(side = "top")
 
         self.bug_label = Tkinter.Label(self.root)
         self.bug_label.pack(side = "bottom", pady=30)
 
 
     def get_user_input(self):
-        #self.user_input_entry.delete(0, 'end')
+        # This is kind of a hack. If the Entry widget is recreated it sometimes
+        # doesn't show up when the main display is several lines. This seems to
+        # solve the problem.
+        self.user_input_entry = Tkinter.Entry(self.user_input_frame, 
+                                              font = self.user_input_font)
         self.user_input_entry.pack(side = "left", anchor="e")
         self.user_input_entry.delete(0, 'end')
         self.user_input_entry.bind("<Return>", 
                                    lambda e : self.submit_button.invoke())
         self.submit_button.pack(side = "right", anchor="w")
         self.user_input_entry.focus_set()
+        self.root.update()
 
     def submit_input(self):
         self.user_input = self.user_input_entry.get()
         self.user_input_entry.pack_forget()
         self.submit_button.pack_forget()
         self.p.submit_clicked()
+        self.root.update()
 
     def set_main_text(self, text):
         """
