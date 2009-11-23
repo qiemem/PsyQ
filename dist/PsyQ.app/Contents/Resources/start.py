@@ -21,10 +21,12 @@ class Main(object):
         """
         self.exit_status = 0
         self.root = master
-        w = self.root.winfo_screenwidth()
-        h = self.root.winfo_screenheight()
+        self.w = self.root.winfo_screenwidth()
+        self.h = self.root.winfo_screenheight()
         self.root.overrideredirect(1)
-        self.root.geometry("%dx%d+0+0" % (w, h))
+        self.root.geometry("%dx%d+0+0" % (self.w, self.h))
+        #self.root.configure(width = 1024)
+        #self.root.configure(height = 768)
         self.experiment_dirname = experiment_dirname
         self.data = []
         self.p = ExperimentProcessor(self, self, experiment_dirname)
@@ -43,7 +45,7 @@ class Main(object):
         self.font = tkFont.Font(self.root, 'Lucida 26')
         self.user_input_font = tkFont.Font(self.root, 'Lucida 18')
 
-        self.top_padding = Tkinter.Frame(self.root, height = 300)
+        self.top_padding = Tkinter.Frame(self.root, height = self.h/3)
         self.top_padding.pack(fill='x')
 
         self.main_display_label = Tkinter.Label(self.root, 
@@ -68,7 +70,7 @@ class Main(object):
         self.instruction_label.pack(side = "top")
 
         self.bug_label = Tkinter.Label(self.root)
-        self.bug_label.pack(side = "bottom", pady=30)
+        self.bug_label.pack(side = "bottom", pady=50)
 
 
     def get_user_input(self):
